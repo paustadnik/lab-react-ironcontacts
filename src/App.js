@@ -6,20 +6,50 @@ import contactsDB from './contacts.json'
 function App() {
 
   let fiveContacts = contactsDB.slice(0, 5)
-  const [contacts, updateContacts] = useState(fiveContacts)
+  const [contacts, setContacts] = useState(fiveContacts)
 
   const randomContact = () => {
     let randomIndex = Math.floor(Math.random() * contactsDB.length);
     let randomContact = contactsDB[randomIndex];
-    console.log(randomContact)
 
-    updateContacts([randomContact, ...contacts]);
+    setContacts([randomContact, ...contacts]);
   };
+
+  const sortByName = () => {
+    let contactsByName = JSON.parse(JSON.stringify(contacts))
+
+    contactsByName.sort((a, b) => {
+      if (a.name > b.name) {
+        return 1
+      } else if (a.name < b.name) {
+        return -1
+      } else {
+        return 0
+      }
+    })
+    setContacts(contactsByName)
+  }
+
+  const sortByPopularity = () => {
+    let contactsByPopularity = JSON.parse(JSON.stringify(contacts))
+
+    contactsByPopularity.sort((a, b) => b.popularity - a.popularity)
+    setContacts(contactsByPopularity)
+  }
+
+  const removeContact = (id) => {
+    let contactsAfterRemoval = contacts.filter((contact) => {
+      return contact.id !== id
+    })
+    setContacts(contactsAfterRemoval)
+  }
 
   return (
     <div className="App">
       <h1>Ironcontacts</h1>
       <button onClick={randomContact} >Add Random Contact</button>
+      <button onClick={sortByName} >Sort by name</button>
+      <button onClick={sortByPopularity} >Sort by popularity</button>
 
       <table>
         <thead>
@@ -47,6 +77,11 @@ function App() {
                 </td>
                 <td>
                   {contact.wonEmmy ? <p>🏆</p>: null}
+                </td>
+                <td>
+                  <button onClick={() => removeContact(contact.id)}>
+                    Delete
+                  </button>
                 </td>
               </tr>
             )
