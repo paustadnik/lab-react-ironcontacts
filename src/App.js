@@ -1,13 +1,26 @@
+import React from "react";
+import { useState } from "react";
 import './App.css';
 import contactsDB from './contacts.json'
 
 function App() {
 
-  const fiveContacts = contactsDB.slice(0, 5)
-  console.log(fiveContacts)
+  let fiveContacts = contactsDB.slice(0, 5)
+  const [contacts, updateContacts] = useState(fiveContacts)
+
+  const randomContact = () => {
+    let randomIndex = Math.floor(Math.random() * contactsDB.length);
+    let randomContact = contactsDB[randomIndex];
+    console.log(randomContact)
+
+    updateContacts([randomContact, ...contacts]);
+  };
 
   return (
     <div className="App">
+      <h1>Ironcontacts</h1>
+      <button onClick={randomContact} >Add Random Contact</button>
+
       <table>
         <thead>
           <tr>
@@ -21,7 +34,7 @@ function App() {
         </thead>
 
         <tbody>
-          {fiveContacts.map((contact) => {
+          {contacts.map((contact) => {
             return (
               <tr key={contact.id}>
                 <td>
@@ -36,8 +49,6 @@ function App() {
                   {contact.wonEmmy ? <p>🏆</p>: null}
                 </td>
               </tr>
-
-              
             )
           })}
         </tbody>
