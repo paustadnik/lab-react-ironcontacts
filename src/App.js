@@ -14,6 +14,8 @@ function App() {
             <th>Picture</th>
             <th>Name</th>
             <th>Popularity</th>
+            <th>Won Oscar</th>
+            <th>Won Emmy</th>
             
           </tr>
         </thead>
@@ -21,12 +23,18 @@ function App() {
         <tbody>
           {fiveContacts.map((contact) => {
             return (
-              <tr>
+              <tr key={contact.id}>
                 <td>
-                <img src={contact.pictureUrl} style={{width: '60px'}}/>
+                <img src={contact.pictureUrl} alt='actor' style={{width: '60px'}}/>
                 </td>
                 <td>{contact.name}</td>
                 <td>{contact.popularity}</td>
+                <td>
+                  {contact.wonOscar ? <p>🏆</p>: null}
+                </td>
+                <td>
+                  {contact.wonEmmy ? <p>🏆</p>: null}
+                </td>
               </tr>
 
               
